@@ -1,0 +1,19 @@
+{
+    "name": "csv2json",
+    "version": "1.0.0",
+    "description": "csv to json application",
+    "main": "main.js",
+    "scripts": {
+        "start": "node_modules/.bin/electron .",
+        "build-mac": "electron-packager . ExcelToJsonApp --platform=darwin --arch=x64 --out=../ --overwrite",
+        "build-win": "electron-packager . ExcelToJsonApp --platform=win32 --arch=all --out=../ --overwrite"
+    },
+    "devDependencies": {
+        "electron": "^6.0.12",
+        "electron-packager": "^14.0.6",
+        "electron-reload": "^1.5.0"
+    },
+    "dependencies": {
+        "xlsx": "^0.15.1"
+    }
+}
