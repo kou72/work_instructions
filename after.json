@@ -1,0 +1,31 @@
+[
+    {
+        "code":"1","title":"食品","flag":"0","order":"1",
+        "child":[
+            {
+                "code":"4","title":"お肉","flag":"1","order":"1",
+                "child":[
+                    { "code":"12","title":"鶏肉","flag":"1","order":"1" },
+                    { "code":"13","title":"豚肉","flag":"0","order":"2" }
+                ]
+            },
+            { "code":"5","title":"魚","flag":"0","order":"2" },
+            { "code":"6","title":"野菜","flag":"1","order":"3" }
+        ]
+    },
+    {
+        "code":"2","title":"飲料","flag":"1","order":"2",
+        "child":[
+            { "code":"7","title":"お酒","flag":"0","order":"4" },
+            { "code":"8","title":"ソフトドリンク","flag":"1","order":"5" }
+        ]
+    },
+    {
+        "code":"3","title":"文房具","flag":"0","order":"3",
+        "child":[
+            { "code":"9","title":"鉛筆","flag":"0","order":"6" },
+            { "code":"10","title":"消しゴム","flag":"1","order":"7" },
+            { "code":"11","title":"封筒","flag":"0","order":"8" }
+        ]
+    }
+]
