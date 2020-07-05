@@ -14,7 +14,7 @@ function PageLoad(evt) {
   drop.addEventListener("drop", handleFileSelect, false);
   readf.addEventListener("click", handleFileClick, false);
   run.addEventListener("click", () => {
-    exec("rlogin", (err, stdout, stderr) => {
+    exec("rlogin /entry testServer /script test.txt", (err, stdout, stderr) => {
       if (err) {
         console.log(`stderr: ${stderr}`);
         return;
