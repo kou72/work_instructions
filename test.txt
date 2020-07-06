@@ -1,3 +1,4 @@
+
 Document.Open();
 wait(CONNECT);
 sopen(OPEN_LOOK);

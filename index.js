@@ -84,147 +84,33 @@ function createJsonFile(filePath) {
     const Sheet1_json = utils.sheet_to_json(Sheet1);
     let errorMessage = "";
 
-    const keysMap = {
-      code: "カテゴリコード",
-      title: "カテゴリ名",
-      flag: "非表示フラグ",
-      order: "表示順",
-      hierarchy: "カテゴリ階層",
-      hier1: "第1階層カテゴリコード",
-      hier2: "第2階層カテゴリコード",
-      hier3: "第3階層カテゴリコード",
-      hier4: "第4階層カテゴリコード",
-      hier5: "第5階層カテゴリコード",
-    };
-    const flag = Sheet1_json.some((item, index) => {
-      if (typeof item[keysMap.code] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.code}が空白です。`;
-        return true;
-      }
-      if (typeof item[keysMap.title] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.title}が空白です。`;
-        return true;
-      }
-      if (typeof item[keysMap.flag] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.flag}が空白です。`;
-        return true;
-      }
-      if (typeof item[keysMap.order] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.order}が空白です。`;
-        return true;
-      }
-      if (typeof item[keysMap.hierarchy] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.hierarchy}が空白です。`;
-        return true;
-      }
-      if (item[keysMap.hierarchy] === 1 && typeof item[keysMap.hier1] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.hier1}が空白です。`;
-        return true;
-      }
-      if (item[keysMap.hierarchy] === 2 && typeof item[keysMap.hier2] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.hier2}が空白です。`;
-        return true;
-      }
-      if (item[keysMap.hierarchy] === 3 && typeof item[keysMap.hier3] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.hier3}が空白です。`;
-        return true;
-      }
-      if (item[keysMap.hierarchy] === 4 && typeof item[keysMap.hier4] === "undefined") {
-        errorMessage += `${index + 2}行目の${keysMap.hier4}が空白です。`;
-        return true;
-      }
-    });
-    if (flag) {
-      throw new Error(errorMessage);
-    }
-    function pushObject(obj) {
-      const cateObj = {
-        code: obj[keysMap.code] + "",
-        title: obj[keysMap.title],
-        flag: obj[keysMap.flag] + "",
-        order: obj[keysMap.order] + "",
-      };
+    console.log(Sheet1_json);
 
-      if (obj[keysMap.code] + "" === obj[keysMap.hier2] + "") {
-        cateObj["hier1"] = obj[keysMap.hier1] + "";
-      }
-      if (obj[keysMap.code] + "" === obj[keysMap.hier3] + "") {
-        cateObj["hier2"] = obj[keysMap.hier2] + "";
-      }
-      if (obj[keysMap.code] + "" === obj[keysMap.hier4] + "") {
-        cateObj["hier3"] = obj[keysMap.hier3] + "";
-      }
-      if (obj[keysMap.code] + "" === obj[keysMap.hier5] + "") {
-        cateObj["hier4"] = obj[keysMap.hier4] + "";
-      }
-      return cateObj;
-    }
-    const category1 = Sheet1_json.filter((item) => item["カテゴリ階層"] === 1).map((item) => {
-      return pushObject(item);
-    });
-    const category2 = Sheet1_json.filter((item) => item["カテゴリ階層"] === 2).map((item) => {
-      return pushObject(item);
-    });
-    const category3 = Sheet1_json.filter((item) => item["カテゴリ階層"] === 3).map((item) => {
-      return pushObject(item);
-    });
-    const category4 = Sheet1_json.filter((item) => item["カテゴリ階層"] === 4).map((item) => {
-      return pushObject(item);
-    });
-    const category5 = Sheet1_json.filter((item) => item["カテゴリ階層"] === 5).map((item) => {
-      return pushObject(item);
-    });
-    const resultarray = category1.map((item) => {
-      let cate2 = [];
-      category2.forEach((item2) => {
-        if (item["code"] == item2["hier1"]) {
-          cate2.push(item2);
-          delete item2["hier1"];
-          item.child = cate2;
-          let cate3 = [];
-          category3.forEach((item3) => {
-            if (item2["code"] === item3["hier2"]) {
-              cate3.push(item3);
-              delete item3["hier2"];
-              item2.child = cate3;
-              let cate4 = [];
-              category4.forEach((item4) => {
-                if (item3["code"] === item4["hier3"]) {
-                  cate4.push(item4);
-                  delete item4["hier3"];
-                  item3.child = cate4;
-                  let cate5 = [];
-                  category5.forEach((item5) => {
-                    if (item4["code"] === item5["hier4"]) {
-                      cate5.push(item5);
-                      delete item5["hier4"];
-                      item4.child = cate5;
-                    }
-                  }); //end loop 5cate
-                }
-              }); //end loop 4cate
-            }
-          }); //end loop 3cate
-        }
-      }); // end loop 2cate
-      return item;
-    });
-    const dataJSON = JSON.stringify(resultarray, undefined, 4);
-    // 改行と空白を整える
-    const output = dataJSON
-      .replace(/:\s+/g, ":")
-      .replace(/("code":"[a-zA-Z]?\d.*?",)\n+\s+("title":".*?",)\n+\s+("flag":"\d{1}",)\n+\s+("order":"\d.*",)/g, "$1$2$3$4")
-      .replace(
-        /({)\s+("code":"[a-zA-Z]?\d.*?",)\n+\s+("title":".*?",)\n+\s+("flag":"\d{1}",)\n+\s+("order":"\d.*")\n+\s+(})/g,
-        "$1 $2$3$4$5 $6"
-      );
+    const output = `
+Document.Open();
+wait(CONNECT);
+sopen(OPEN_LOOK);
+sputs("mkdir test \\n");
+swait(5, "$");
+sputs("cd test \\n");
+swait(5, "$");
+sputs("touch test.txt \\n");
+swait(5, "$");
+sputs("ls -la \\n");
+swait(5, "$");
+sputs("rm test.txt \\n");
+swait(5, "$");
+sputs("cd ../ \\n");
+swait(5, "$");
+sputs("rm -r test \\n");
+`;
 
     Dialog.showSaveDialog(
       null,
       {
         title: "保存",
         defaultPath: ".",
-        filters: [{ name: "JSONファイル", extensions: ["json"] }],
+        filters: [{ name: "TEXTファイル", extensions: ["txt"] }],
       },
       (savedFiles) => {
         writeFile(savedFiles, output);
