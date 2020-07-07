@@ -9,7 +9,7 @@
         "build-win": "electron-packager . ExcelToJsonApp --platform=win32 --arch=all --out=../ --overwrite"
     },
     "devDependencies": {
-        "electron": "^6.0.12",
+        "electron": "^9.1.0",
         "electron-packager": "^14.0.6",
         "electron-reload": "^1.5.0"
     },
