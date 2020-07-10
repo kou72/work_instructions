@@ -19,7 +19,7 @@ function createWindow() {
   });
   win.loadURL("file://" + __dirname + "/index.html");
   //developer tool build
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
   win.on("closed", function () {
     win = null;
   });

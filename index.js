@@ -83,39 +83,30 @@ function createJsonFile(filePath) {
     const Sheet1 = dataExcel.Sheets[sheet_name_list[0]];
     const Sheet1_json = utils.sheet_to_json(Sheet1);
     let errorMessage = "";
-
-    console.log(Sheet1_json);
-
-    const output = `
+    let output = `
 Document.Open();
 wait(CONNECT);
-sopen(OPEN_LOOK);
-sputs("mkdir test \\n");
-swait(5, "$");
-sputs("cd test \\n");
-swait(5, "$");
-sputs("touch test.txt \\n");
-swait(5, "$");
-sputs("ls -la \\n");
-swait(5, "$");
-sputs("rm test.txt \\n");
-swait(5, "$");
-sputs("cd ../ \\n");
-swait(5, "$");
-sputs("rm -r test \\n");
-`;
+sopen(OPEN_LOOK);`
 
-    Dialog.showSaveDialog(
-      null,
-      {
-        title: "保存",
-        defaultPath: ".",
-        filters: [{ name: "TEXTファイル", extensions: ["txt"] }],
-      },
-      (savedFiles) => {
-        writeFile(savedFiles, output);
-      }
-    );
+    for (let cel of Sheet1_json){
+      // console.log(cel.command);
+      output += `
+sputs("${cel.command} \\n");
+sleep(2000);`
+    }
+
+    writeFile("./test.txt", output);
+    // Dialog.showSaveDialog(
+    //   null,
+    //   {
+    //     title: "保存",
+    //     defaultPath: ".",
+    //     filters: [{ name: "TEXTファイル", extensions: ["txt"] }],
+    //   },
+    //   (savedFiles) => {
+    //     writeFile(savedFiles, output);
+    //   }
+    // );
   } catch (e) {
     alert(e.message);
   }
